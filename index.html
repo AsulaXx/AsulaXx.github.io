@@ -218,19 +218,6 @@
             border: 2px solid rgba(255,255,255,0.1);
         }
 
-        .copy-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(102, 126, 234, 0.9);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
         .analyzer-results {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 20px;
@@ -291,69 +278,20 @@
             transform: translateX(8px);
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
+        .history-item .date {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 5px;
         }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover { color: black; }
-
-        @media (max-width: 768px) {
-            .main-content { grid-template-columns: 1fr; }
-            .header h1 { font-size: 2.2rem; }
-            .card { padding: 20px; }
-            .nav-tabs { justify-content: flex-start; overflow-x: auto; }
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            z-index: 1001;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        }
-
-        .notification.show { transform: translateX(0); }
-        .notification.error { background: #dc3545; }
-
-        .fade-in {
-            animation: fadeIn 0.6s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .history-item .preview {
+            font-size: 14px;
+            color: #495057;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
 
         .advanced-templates {
@@ -387,6 +325,39 @@
             color: #6c757d;
             font-size: 0.9rem;
             line-height: 1.4;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show { transform: translateX(0); }
+        .notification.error { background: #dc3545; }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .main-content { grid-template-columns: 1fr; }
+            .header h1 { font-size: 2.2rem; }
+            .card { padding: 20px; }
+            .nav-tabs { justify-content: flex-start; overflow-x: auto; }
         }
     </style>
 </head>
@@ -632,14 +603,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
     <div id="notification" class="notification"></div>
 
     <script>
@@ -674,4 +637,625 @@
                 additional: "อธิบายง่ายๆ ใช้ตัวอย่างที่เข้าใจง่าย และมีแบบฝึกหัดให้ทำ"
             },
             analysis: {
-                role: "นักวิเคราะห
+                role: "นักวิเคราะห์ข้อมูลและนักวิจัย",
+                topic: "การวิเคราะห์ข้อมูลและการตีความผลลัพธ์",
+                format: "table",
+                difficulty: "advanced",
+                additional: "แสดงข้อมูลเชิงตัวเลข วิเคราะห์แนวโน้ม และให้ข้อสรุปที่ชัดเจน"
+            },
+            creative: {
+                role: "ครีเอทีฟและนักออกแบบ",
+                topic: "ไอเดียสร้างสรรค์และการออกแบบ",
+                format: "list",
+                difficulty: "intermediate",
+                additional: "ให้ไอเดียที่หลากหลาย มีความคิดสร้างสรรค์ และปฏิบัติได้จริง"
+            }
+        };
+
+        const advancedTemplates = {
+            seo: {
+                role: "SEO Expert และ Content Strategist ระดับมืออาชีพ",
+                topic: "การเขียนเนื้อหาที่เป็นมิตรกับ SEO",
+                format: "paragraph",
+                difficulty: "advanced",
+                additional: "ใช้ keywords อย่างเป็นธรรมชาติ, สร้าง meta description ที่น่าสนใจ, และเนื้อหาที่ให้คุณค่ากับผู้อ่าน. รวมถึงการแนะนำ internal/external links และ structured data"
+            },
+            social: {
+                role: "Social Media Manager และ Digital Marketing Expert",
+                topic: "การสร้างเนื้อหาโซเชียลมีเดียที่มี engagement สูง",
+                format: "list",
+                difficulty: "intermediate",
+                additional: "สร้างเนื้อหาที่เหมาะกับแต่ละแพลตฟอร์ม, ใช้ hashtags อย่างมีกลยุทธ์, และสร้างการมีส่วนร่วมจากผู้ติดตาม. รวมถึงการวิเคราะห์เวลาโพสต์ที่เหมาะสม"
+            },
+            email: {
+                role: "Email Marketing Specialist และ Copywriter",
+                topic: "การเขียนอีเมลการตลาดที่มีประสิทธิภาพ",
+                format: "steps",
+                difficulty: "advanced",
+                additional: "สร้าง subject line ที่น่าสนใจ, เนื้อหาที่ส่วนตัวและเกี่ยวข้อง, call-to-action ที่ชัดเจน, และหลีกเลี่ยงการถูกจัดเป็น spam"
+            },
+            translation: {
+                role: "Professional Translator และ Linguist ผู้เชี่ยวชาญ",
+                topic: "การแปลภาษาที่มีคุณภาพระดับมืออาชีพ",
+                format: "paragraph",
+                difficulty: "expert",
+                additional: "คำนึงถึงบริบท, วัฒนธรรม, และความหมายที่แฝงอยู่. แปลให้ความหมายตรงและอ่านเป็นธรรมชาติในภาษาปลายทาง"
+            },
+            research: {
+                role: "Research Assistant และ Academic Researcher",
+                topic: "การค้นคว้าและสรุปข้อมูลจากแหล่งที่เชื่อถือได้",
+                format: "table",
+                difficulty: "advanced",
+                additional: "อ้างอิงแหล่งที่มา, วิเคราะห์ความน่าเชื่อถือของข้อมูล, สรุปประเด็นสำคัญ, และนำเสนอข้อมูลในรูปแบบที่เข้าใจง่าย"
+            },
+            consultant: {
+                role: "Business Consultant และ Strategic Advisor",
+                topic: "การให้คำปรึกษาทางธุรกิจและกลยุทธ์",
+                format: "steps",
+                difficulty: "expert",
+                additional: "วิเคราะห์สถานการณ์ปัจจุบัน, ระบุปัญหาและโอกาส, เสนอแนะกลยุทธ์ที่ใช้ได้จริง, และให้แผนการดำเนินงานที่ชัดเจน"
+            },
+            teacher: {
+                role: "Personalized Tutor และ Educational Expert",
+                topic: "การสอนและอธิบายแนวคิดซับซ้อน",
+                format: "steps",
+                difficulty: "intermediate",
+                additional: "ปรับรูปแบบการสอนตามระดับผู้เรียน, ใช้ตัวอย่างที่เข้าใจง่าย, สร้างแบบฝึกหัด, และให้ feedback ที่สร้างสรรค์"
+            },
+            debugger: {
+                role: "Senior Software Engineer และ Code Reviewer",
+                topic: "การ debug และปรับปรุงโค้ดให้มีประสิทธิภาพ",
+                format: "code",
+                difficulty: "expert",
+                additional: "วิเคราะห์โค้ดอย่างละเอียด, ระบุจุดที่มีปัญหา, เสนอวิธีแก้ไขพร้อมคำอธิบาย, และแนะนำ best practices"
+            }
+        };
+
+        let promptHistory = [];
+
+        // ฟังก์ชันจัดการ Tabs
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // ฟังก์ชัน Templates
+        function loadTemplate(templateName) {
+            const template = templates[templateName];
+            if (template) {
+                document.getElementById('role').value = template.role;
+                document.getElementById('topic').value = template.topic;
+                document.getElementById('format').value = template.format;
+                document.getElementById('difficulty').value = template.difficulty;
+                document.getElementById('additional').value = template.additional;
+                
+                showNotification('โหลดเทมเพลตเรียบร้อย! 🎉');
+            }
+        }
+
+        function loadAdvancedTemplate(templateName) {
+            const template = advancedTemplates[templateName];
+            if (template) {
+                document.getElementById('role').value = template.role;
+                document.getElementById('topic').value = template.topic;
+                document.getElementById('format').value = template.format;
+                document.getElementById('difficulty').value = template.difficulty;
+                document.getElementById('additional').value = template.additional;
+                
+                showNotification('โหลด Advanced Template เรียบร้อย! 🚀');
+                showTab('generator');
+            }
+        }
+
+        // ฟังก์ชันสร้าง Prompt
+        function generatePrompt() {
+            const aiType = document.getElementById('aiType').value;
+            const role = document.getElementById('role').value;
+            const topic = document.getElementById('topic').value;
+            const format = document.getElementById('format').value;
+            const difficulty = document.getElementById('difficulty').value;
+            const length = document.getElementById('length').value;
+            const additional = document.getElementById('additional').value;
+
+            if (!role && !topic) {
+                showNotification('กรุณาระบุบทบาทหรือหัวข้ออย่างน้อย 1 รายการ', 'error');
+                return;
+            }
+
+            let prompt = '';
+            
+            if (role) {
+                prompt += `คุณคือ ${role} `;
+            }
+            
+            if (topic) {
+                prompt += `ที่เชี่ยวชาญเรื่อง ${topic} `;
+            }
+
+            prompt += '\n\n';
+
+            if (topic) {
+                prompt += `กรุณาให้ข้อมูล คำแนะนำ หรือตอบคำถามเกี่ยวกับ ${topic} `;
+            }
+
+            if (format) {
+                const formatText = {
+                    'list': 'ในรูปแบบรายการที่เป็นจุดๆ',
+                    'paragraph': 'ในรูปแบบย่อหน้าที่อ่านง่าย',
+                    'steps': 'ในรูปแบบขั้นตอนที่ชัดเจน',
+                    'table': 'ในรูปแบบตารางที่เป็นระเบียบ',
+                    'code': 'พร้อมตัวอย่างโค้ดที่ใช้ได้จริง',
+                    'json': 'ในรูปแบบ JSON ที่สามารถนำไปใช้ได้',
+                    'markdown': 'ในรูปแบบ Markdown ที่จัดรูปแบบสวยงาม',
+                    'dialogue': 'ในรูปแบบบทสนทนาที่น่าสนใจ'
+                };
+                prompt += formatText[format] + ' ';
+            }
+
+            if (length) {
+                const lengthText = {
+                    'short': 'โดยให้คำตอบที่กระชับและตรงประเด็น',
+                    'medium': 'โดยให้คำตอบที่มีรายละเอียดพอสมควร',
+                    'long': 'โดยให้คำตอบที่ละเอียดและครอบคลุม',
+                    'detailed': 'โดยให้คำตอบที่ละเอียดมากพร้อมตัวอย่างมากมาย'
+                };
+                prompt += lengthText[length] + ' ';
+            }
+
+            if (difficulty) {
+                const difficultyText = {
+                    'beginner': 'โดยอธิบายในระดับเริ่มต้น เข้าใจง่าย',
+                    'intermediate': 'โดยให้ข้อมูลในระดับกลาง มีรายละเอียดพอสมควร',
+                    'advanced': 'โดยให้ข้อมูลระดับสูง มีรายละเอียดเชิงลึก',
+                    'expert': 'โดยให้ข้อมูลระดับผู้เชี่ยวชาญ ครอบคลุมทุกแง่มุม'
+                };
+                prompt += difficultyText[difficulty] + ' ';
+            }
+
+            if (additional) {
+                prompt += '\n\nข้อกำหนดเพิ่มเติม: ' + additional;
+            }
+
+            prompt += '\n\nกรุณาตอบเป็นภาษาไทย และให้ข้อมูลที่แม่นยำ เป็นประโยชน์ต่อผู้อ่าน';
+
+            document.getElementById('output').textContent = prompt;
+            showNotification('สร้าง Prompt เรียบร้อยแล้ว! ✨');
+        }
+
+        // ฟังก์ชัน Prompt Analyzer
+        function analyzePrompt() {
+            const promptText = document.getElementById('analyzeInput').value;
+            if (!promptText.trim()) {
+                showNotification('กรุณาใส่ Prompt ที่ต้องการวิเคราะห์', 'error');
+                return;
+            }
+            
+            const analysis = performPromptAnalysis(promptText);
+            displayAnalysis(analysis);
+        }
+
+        function analyzeCurrentPrompt() {
+            const currentPrompt = document.getElementById('output').textContent;
+            if (currentPrompt === 'คลิก "สร้าง Prompt" เพื่อเริ่มต้น...') {
+                showNotification('กรุณาสร้าง Prompt ก่อนวิเคราะห์', 'error');
+                return;
+            }
+            
+            document.getElementById('analyzeInput').value = currentPrompt;
+            showTab('analyzer');
+            
+            const analysis = performPromptAnalysis(currentPrompt);
+            displayAnalysis(analysis);
+        }
+
+        function performPromptAnalysis(promptText) {
+            let score = 0;
+            let maxScore = 100;
+            let improvements = [];
+            
+            if (promptText.length < 50) {
+                improvements.push('• Prompt สั้นเกินไป ควรเพิ่มรายละเอียดมากขึ้น');
+            } else if (promptText.length > 500) {
+                improvements.push('• Prompt อาจยาวเกินไป ควรกระชับให้ชัดเจนขึ้น');
+            } else {
+                score += 20;
+            }
+            
+            const roleKeywords = ['คุณคือ', 'เป็น', 'ทำหน้าที่', 'บทบาท', 'ผู้เชี่ยวชาญ'];
+            if (roleKeywords.some(keyword => promptText.includes(keyword))) {
+                score += 25;
+            } else {
+                improvements.push('• ควรระบุบทบาทของ AI ให้ชัดเจน');
+            }
+            
+            const commandKeywords = ['กรุณา', 'ให้', 'สร้าง', 'เขียน', 'อธิบาย', 'วิเคราะห์'];
+            if (commandKeywords.some(keyword => promptText.includes(keyword))) {
+                score += 20;
+            } else {
+                improvements.push('• ควรใช้คำสั่งที่ชัดเจน เช่น "กรุณา" หรือ "ให้"');
+            }
+            
+            const formatKeywords = ['รูปแบบ', 'ตาราง', 'รายการ', 'ขั้นตอน', 'ย่อหน้า'];
+            if (formatKeywords.some(keyword => promptText.includes(keyword))) {
+                score += 15;
+            } else {
+                improvements.push('• ควรระบุรูปแบบผลลัพธ์ที่ต้องการ');
+            }
+            
+            const contextKeywords = ['ตัวอย่าง', 'เพิ่มเติม', 'รายละเอียด', 'อธิบาย'];
+            if (contextKeywords.some(keyword => promptText.includes(keyword))) {
+                score += 10;
+            } else {
+                improvements.push('• ควรเพิ่มบริบทหรือตัวอย่างเพื่อความชัดเจน');
+            }
+            
+            if (promptText.includes('ภาษาไทย')) {
+                score += 10;
+            } else {
+                improvements.push('• ควรระบุให้ตอบเป็นภาษาไทย');
+            }
+            
+            return {
+                score: score,
+                maxScore: maxScore,
+                improvements: improvements,
+                level: score >= 80 ? 'ดีเยี่ยม' : score >= 60 ? 'ดี' : score >= 40 ? 'พอใช้' : 'ต้องปรับปรุง'
+            };
+        }
+
+        function displayAnalysis(analysis) {
+            const color = analysis.score >= 80 ? '#28a745' : analysis.score >= 60 ? '#ffc107' : analysis.score >= 40 ? '#fd7e14' : '#dc3545';
+            
+            const resultsHTML = `
+                <div class="analyzer-results">
+                    <div class="score-container">
+                        <div class="score-circle" style="background: ${color}">
+                            ${analysis.score}/${analysis.maxScore}
+                        </div>
+                        <div>
+                            <h3>คะแนน Prompt: ${analysis.level}</h3>
+                            <p>Prompt ของคุณได้คะแนน ${analysis.score} จาก ${analysis.maxScore} คะแนน</p>
+                        </div>
+                    </div>
+                    
+                    ${analysis.improvements.length > 0 ? `
+                        <div class="improvements">
+                            <h4>💡 ข้อแนะนำการปรับปรุง:</h4>
+                            ${analysis.improvements.map(imp => `<p>${imp}</p>`).join('')}
+                        </div>
+                    ` : '<div class="improvements"><h4>🎉 Prompt ของคุณมีคุณภาพดีแล้ว!</h4></div>'}
+                </div>
+            `;
+            
+            document.getElementById('analysisResults').innerHTML = resultsHTML;
+        }
+
+        function optimizePrompt() {
+            const currentPrompt = document.getElementById('output').textContent;
+            if (currentPrompt === 'คลิก "สร้าง Prompt" เพื่อเริ่มต้น...') {
+                showNotification('กรุณาสร้าง Prompt ก่อนปรับปรุง', 'error');
+                return;
+            }
+            
+            const analysis = performPromptAnalysis(currentPrompt);
+            let optimizedPrompt = currentPrompt;
+            
+            if (!optimizedPrompt.includes('คุณคือ') && !optimizedPrompt.includes('เป็น')) {
+                optimizedPrompt = 'คุณคือผู้เชี่ยวชาญ ' + optimizedPrompt;
+            }
+            
+            if (!optimizedPrompt.includes('กรุณา') && !optimizedPrompt.includes('ให้')) {
+                optimizedPrompt = optimizedPrompt.replace(/^/, 'กรุณา');
+            }
+            
+            if (!optimizedPrompt.includes('ภาษาไทย')) {
+                optimizedPrompt += '\n\nกรุณาตอบเป็นภาษาไทยและให้ข้อมูลที่แม่นยำ';
+            }
+            
+            document.getElementById('output').textContent = optimizedPrompt;
+            showNotification('ปรับปรุง Prompt เรียบร้อย! ⚡');
+        }
+
+        // ฟังก์ชันจัดการตัวแปร
+        function processVariables() {
+            const template = document.getElementById('variableTemplate').value;
+            if (!template.trim()) {
+                showNotification('กรุณาใส่ Template ที่มีตัวแปร', 'error');
+                return;
+            }
+            
+            let result = template;
+            const variables = template.match(/\{([^}]+)\}/g);
+            
+            if (variables) {
+                variables.forEach(variable => {
+                    const varName = variable.slice(1, -1);
+                    const input = document.querySelector(`input[data-variable="${varName}"]`);
+                    if (input && input.value) {
+                        result = result.replace(variable, input.value);
+                    }
+                });
+            }
+            
+            document.getElementById('variableOutput').textContent = result;
+        }
+
+        function addVariable() {
+            const template = document.getElementById('variableTemplate').value;
+            const variables = template.match(/\{([^}]+)\}/g);
+            
+            if (!variables) {
+                showNotification('ไม่พบตัวแปรใน Template กรุณาใช้ {variable_name}', 'error');
+                return;
+            }
+            
+            const uniqueVars = [...new Set(variables.map(v => v.slice(1, -1)))];
+            const inputsHTML = uniqueVars.map(varName => `
+                <div class="variable-input">
+                    <label>${varName}:</label>
+                    <input type="text" class="form-control" data-variable="${varName}" placeholder="ค่าสำหรับ ${varName}" onchange="processVariables()">
+                </div>
+            `).join('');
+            
+            document.getElementById('variableInputs').innerHTML = inputsHTML;
+            showNotification(`พบตัวแปร ${uniqueVars.length} ตัว!`);
+        }
+
+        // ฟังก์ชัน Export/Import
+        function exportPrompts() {
+            if (promptHistory.length === 0) {
+                showNotification('ไม่มีประวัติ Prompt ให้ Export', 'error');
+                return;
+            }
+
+            const format = document.getElementById('exportFormat').value;
+            let content = '';
+            let filename = '';
+            let mimeType = '';
+            
+            if (format === 'txt') {
+                content = promptHistory.map(item => 
+                    `=== ${item.date} ===\nRole: ${item.role || 'ไม่ระบุ'}\nTopic: ${item.topic || 'ไม่ระบุ'}\n\n${item.prompt}\n\n`
+                ).join('---\n\n');
+                filename = 'prompts.txt';
+                mimeType = 'text/plain';
+            } else if (format === 'json') {
+                content = JSON.stringify(promptHistory, null, 2);
+                filename = 'prompts.json';
+                mimeType = 'application/json';
+            } else if (format === 'csv') {
+                content = 'Date,Role,Topic,Prompt\n' + 
+                    promptHistory.map(item => 
+                        `"${item.date}","${item.role || ''}","${item.topic || ''}","${item.prompt.replace(/"/g, '""')}"`
+                    ).join('\n');
+                filename = 'prompts.csv';
+                mimeType = 'text/csv';
+            }
+            
+            downloadFile(content, filename, mimeType);
+            showNotification(`Export ${format.toUpperCase()} เรียบร้อย! 📤`);
+        }
+
+        function exportCurrentPrompt() {
+            const currentPrompt = document.getElementById('output').textContent;
+            if (currentPrompt === 'คลิก "สร้าง Prompt" เพื่อเริ่มต้น...') {
+                showNotification('ไม่มี Prompt ให้ Export', 'error');
+                return;
+            }
+            
+            downloadFile(currentPrompt, 'current_prompt.txt', 'text/plain');
+            showNotification('Export Prompt ปัจจุบันเรียบร้อย! 📋');
+        }
+
+        function importTemplates() {
+            const fileInput = document.getElementById('importFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showNotification('กรุณาเลือกไฟล์', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let data;
+                    if (file.name.endsWith('.json')) {
+                        data = JSON.parse(e.target.result);
+                        if (Array.isArray(data)) {
+                            promptHistory = [...promptHistory, ...data];
+                        } else {
+                            promptHistory.push(data);
+                        }
+                    } else {
+                        const content = e.target.result;
+                        promptHistory.push({
+                            prompt: content,
+                            date: new Date().toLocaleString('th-TH'),
+                            role: 'Imported',
+                            topic: 'From File'
+                        });
+                    }
+                    
+                    updateHistoryDisplay();
+                    showNotification('Import สำเร็จ! 📥');
+                } catch (error) {
+                    showNotification('ไฟล์ไม่ถูกต้อง', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function importFromJSON() {
+            const jsonText = document.getElementById('jsonTemplate').value;
+            if (!jsonText.trim()) {
+                showNotification('กรุณาใส่ JSON Template', 'error');
+                return;
+            }
+            
+            try {
+                const template = JSON.parse(jsonText);
+                if (template.role) document.getElementById('role').value = template.role;
+                if (template.topic) document.getElementById('topic').value = template.topic;
+                if (template.format) document.getElementById('format').value = template.format;
+                if (template.difficulty) document.getElementById('difficulty').value = template.difficulty;
+                if (template.additional) document.getElementById('additional').value = template.additional;
+                
+                showNotification('Import JSON Template เรียบร้อย! 📝');
+                showTab('generator');
+            } catch (error) {
+                showNotification('JSON ไม่ถูกต้อง', 'error');
+            }
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ฟังก์ชันอื่นๆ
+        function copyPrompt() {
+            const output = document.getElementById('output').textContent;
+            if (output === 'คลิก "สร้าง Prompt" เพื่อเริ่มต้น...') {
+                showNotification('ไม่มี Prompt ให้คัดลอก กรุณาสร้าง Prompt ก่อน', 'error');
+                return;
+            }
+            
+            navigator.clipboard.writeText(output).then(() => {
+                showNotification('คัดลอก Prompt เรียบร้อย! 📋');
+            });
+        }
+
+        function savePrompt() {
+            const output = document.getElementById('output').textContent;
+            if (output === 'คลิก "สร้าง Prompt" เพื่อเริ่มต้น...') {
+                showNotification('ไม่มี Prompt ให้บันทึก กรุณาสร้าง Prompt ก่อน', 'error');
+                return;
+            }
+            
+            const promptData = {
+                prompt: output,
+                date: new Date().toLocaleString('th-TH'),
+                role: document.getElementById('role').value,
+                topic: document.getElementById('topic').value
+            };
+            
+            promptHistory.unshift(promptData);
+            if (promptHistory.length > 10) {
+                promptHistory.pop();
+            }
+            
+            updateHistoryDisplay();
+            showNotification('บันทึก Prompt แล้ว! 💾');
+        }
+
+        function updateHistoryDisplay() {
+            const historyDiv = document.getElementById('history');
+            if (promptHistory.length === 0) {
+                historyDiv.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 20px;">ยังไม่มีประวัติ Prompt</p>';
+                return;
+            }
+            
+            historyDiv.innerHTML = promptHistory.map(item => `
+                <div class="history-item" onclick="loadFromHistory('${item.prompt.replace(/'/g, "\\'")}')">
+                    <div class="date">${item.date}</div>
+                    <div class="preview">
+                        <strong>${item.role || 'ไม่ระบุบทบาท'}</strong> - ${item.topic || 'ไม่ระบุหัวข้อ'}
+                        <br>${item.prompt.substring(0, 100)}...
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadFromHistory(prompt) {
+            document.getElementById('output').textContent = prompt;
+            showNotification('โหลด Prompt จากประวัติเรียบร้อย! 📚');
+        }
+
+        function clearHistory() {
+            promptHistory = [];
+            updateHistoryDisplay();
+            showNotification('ลบประวัติเรียบร้อย! 🗑️');
+        }
+
+        function clearForm() {
+            document.getElementById('role').value = '';
+            document.getElementById('topic').value = '';
+            document.getElementById('format').value = '';
+            document.getElementById('difficulty').value = '';
+            document.getElementById('length').value = '';
+            document.getElementById('additional').value = '';
+            document.getElementById('aiType').value = 'general';
+            showNotification('ล้างข้อมูลเรียบร้อย! 🧹');
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type === 'error' ? 'error' : ''}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('variableTemplate').addEventListener('input', function() {
+                const template = this.value;
+                const variables = template.match(/\{([^}]+)\}/g);
+                
+                if (variables) {
+                    const uniqueVars = [...new Set(variables.map(v => v.slice(1, -1)))];
+                    const inputsHTML = uniqueVars.map(varName => `
+                        <div class="variable-input">
+                            <label>${varName}:</label>
+                            <input type="text" class="form-control" data-variable="${varName}" placeholder="ค่าสำหรับ ${varName}" onchange="processVariables()">
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('variableInputs').innerHTML = inputsHTML;
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case 'Enter':
+                            e.preventDefault();
+                            generatePrompt();
+                            break;
+                        case 's':
+                            e.preventDefault();
+                            savePrompt();
+                            break;
+                        case 'c':
+                            if (e.shiftKey) {
+                                e.preventDefault();
+                                copyPrompt();
+                            }
+                            break;
+                    }
+                }
+            });
+        });
+
+        // Initialize
+        updateHistoryDisplay();
+    </script>
+</body>
+</html>
